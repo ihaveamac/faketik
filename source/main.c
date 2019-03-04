@@ -26,6 +26,18 @@ void fix_unused_tickets(void) {
 	u64 *tickets;
 	u64 *missingTickets;
 
+	bool etd_available;
+	res = AM_QueryAvailableExternalTitleDatabase(&etd_available);
+	if (R_FAILED(res)) {
+		printf("Failed to query the exteral title database.\n  AM_QueryAvailableExternalTitleDatabase:\n  0x%08lx", res);
+		return;
+	}
+
+	if (!etd_available) {
+		puts("The External Title Database is not available.");
+		return;
+	}
+
 	// get titles
 	res = AM_GetTitleCount(MEDIATYPE_NAND, &titlesNANDCount);
 	res = AM_GetTitleCount(MEDIATYPE_SD, &titlesSDMCCount);
@@ -147,6 +159,8 @@ int main(int argc, char* argv[])
 	amInit();
 	gfxInitDefault();
 	consoleInit(GFX_TOP, NULL);
+
+	puts("faketik v1.1");
 
 	puts("Starting to fix tickets...");
 	fix_unused_tickets();
