@@ -160,10 +160,14 @@ int main(int argc, char* argv[])
 	gfxInitDefault();
 	consoleInit(GFX_TOP, NULL);
 
-	puts("faketik v1.1");
+	puts("faketik v1.1.1");
 
 	puts("Starting to fix tickets...");
 	fix_unused_tickets();
+
+	puts("\nWHY DID MY GAME NOT APPEAR?");
+	puts("  Visit the page below for help!");
+	puts("    https://github.com/ihaveamac/faketik");
 	puts("\nPress START or B to exit.");
 
 	while (aptMainLoop())
