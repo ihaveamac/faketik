@@ -16,3 +16,8 @@ This happens because `title.db` does not exist where the Nintendo 3DS is attempt
 
 ## It's installing a bunch of 0000000000000000 tickets / the message "Failed to allocate memory for the ticket buf." appeared!
 This means the external title database does not exist. This issue was fixed in v1.1.
+
+## My game doesn't work!
+This is not due to faketik. This only creates tickets to make titles re-appear. It does not fix broken titles or missing seeds.
+
+There is a potential case for DLC titles with over 256 contents, since the current ticket only covers 256 bits in the Content Index. The best way to fix this is to delete the ticket and re-install a legitimate one from Nintendo eShop.
