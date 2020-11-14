@@ -40,7 +40,15 @@ void fix_unused_tickets(void) {
 
 	// get titles
 	res = AM_GetTitleCount(MEDIATYPE_NAND, &titlesNANDCount);
+	if (R_FAILED(res)) {
+		printf("Failed to call AM_GetTitleCount(MEDIATYPE_NAND): 0x%08lx\n", res);
+		return;
+	}
 	res = AM_GetTitleCount(MEDIATYPE_SD, &titlesSDMCCount);
+	if (R_FAILED(res)) {
+		printf("Failed to call AM_GetTitleCount(MEDIATYPE_SD): 0x%08lx\n", res);
+		return;
+	}
 
 	titleTotalCount = titlesNANDCount + titlesSDMCCount;
 
@@ -51,12 +59,27 @@ void fix_unused_tickets(void) {
 	}
 
 	res = AM_GetTitleList(&titlesNANDRead, MEDIATYPE_NAND, titlesNANDCount, titles);
-	res = AM_GetTitleList(&titlesSDMCRead, MEDIATYPE_SD, titlesSDMCRead, titles + titlesNANDRead);
+	if (R_FAILED(res)) {
+		printf("Failed to call AM_GetTitleList(MEDIATYPE_NAND): 0x%08lx\n", res);
+		free(titles);
+		return;
+	}
+	res = AM_GetTitleList(&titlesSDMCRead, MEDIATYPE_SD, titlesSDMCCount, titles + titlesNANDRead);
+	if (R_FAILED(res)) {
+		printf("Failed to call AM_GetTitleList(MEDIATYPE_SD): 0x%08lx\n", res);
+		free(titles);
+		return;
+	}
 
 	titleTotalRead = titlesNANDRead + titlesSDMCRead;
 
 	// get tickets
 	res = AM_GetTicketCount(&ticketsCount);
+	if (R_FAILED(res)) {
+		printf("Failed to call AM_GetTicketCount: 0x%08lx\n", res);
+		free(titles);
+		return;
+	}
 
 	tickets = calloc(ticketsCount, sizeof(u64));
 	if (!tickets) {
@@ -76,7 +99,7 @@ void fix_unused_tickets(void) {
 	res = AM_GetTicketList(&ticketsRead, ticketsCount, 0, tickets);
 
 	if (R_FAILED(res)) {
-		printf("Getting ticket or title information.\nI don't think this should happen...\n  err: 0x%08lx\n", res);
+		printf("Failed to call AM_GetTicketList: 0x%08lx\n", res);
 		free(titles);
 		free(tickets);
 		free(missingTickets);
@@ -127,21 +150,24 @@ void fix_unused_tickets(void) {
 		res = AM_InstallTicketBegin(&ticketHandle);
 		if (R_FAILED(res)) {
 			printf("Ticket install for %016llx failed:\n  AM_InstallTicketBegin: 0x%08lx\n", missingTickets[i], res);
-			AM_InstallTicketAbort(ticketHandle);
+			res = AM_InstallTicketAbort(ticketHandle);
+			if (R_FAILED(res)) printf("Failed to call AM_InstallTicketAbort: 0x%08lx\n", res);
 			continue;
 		}
 
 		res = FSFILE_Write(ticketHandle, NULL, 0, buf, sizeof(struct ticket_dumb), 0);
 		if (R_FAILED(res)) {
 			printf("Ticket install for %016llx failed:\n  FSFILE_Write: 0x%08lx\n", missingTickets[i], res);
-			AM_InstallTicketAbort(ticketHandle);
+			res = AM_InstallTicketAbort(ticketHandle);
+			if (R_FAILED(res)) printf("Failed to call AM_InstallTicketAbort: 0x%08lx\n", res);
 			continue;
 		}
 
 		res = AM_InstallTicketFinish(ticketHandle);
 		if (R_FAILED(res)) {
 			printf("Ticket install for %016llx failed:\n  AM_InstallTicketFinish: 0x%08lx\n", missingTickets[i], res);
-			AM_InstallTicketAbort(ticketHandle);
+			res = AM_InstallTicketAbort(ticketHandle);
+			if (R_FAILED(res)) printf("Failed to call AM_InstallTicketAbort: 0x%08lx\n", res);
 			continue;
 		}
 
