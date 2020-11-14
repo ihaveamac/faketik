@@ -186,7 +186,7 @@ int main(int argc, char* argv[])
 	gfxInitDefault();
 	consoleInit(GFX_TOP, NULL);
 
-	puts("faketik v1.1.1");
+	puts("faketik v1.1.2");
 
 	puts("Starting to fix tickets...");
 	fix_unused_tickets();
