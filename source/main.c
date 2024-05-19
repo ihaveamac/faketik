@@ -34,7 +34,12 @@ void fix_unused_tickets(void) {
 	}
 
 	if (!etd_available) {
-		puts("The External Title Database is not available.");
+		puts(
+			"The External Title Database is not available.\n"
+			"\n"
+			"This means the 3DS thinks there is no software\n"
+			"installed.\n"
+		);
 		return;
 	}
 
