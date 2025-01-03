@@ -4,7 +4,7 @@
     devkitNix.url = "github:bandithedoge/devkitNix";
   };
 
-  outputs = { self, nixpkgs, devkitNix, hax-nur }: {
+  outputs = { self, nixpkgs, devkitNix }: {
     devShells.x86_64-linux.default = let
       pkgs = import nixpkgs { system = "x86_64-linux"; overlays = [ devkitNix.overlays.default ]; };
     in pkgs.mkShell {

@@ -37,23 +37,6 @@
         "type": "github"
       }
     },
-    "hax-nur": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_2"
-      },
-      "locked": {
-        "lastModified": 1734059971,
-        "narHash": "sha256-7ckftHJNP59acVgsV6ZwzdrPkB0fY7a9fqfSjF93O/M=",
-        "owner": "ihaveamac",
-        "repo": "nur-packages",
-        "rev": "d507e624827112b5bd8a1ddafd31090df83213cd",
-        "type": "github"
-      },
-      "original": {
-        "id": "hax-nur",
-        "type": "indirect"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1731890469,
@@ -72,22 +55,6 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1733749988,
-        "narHash": "sha256-+5qdtgXceqhK5ZR1YbP1fAUsweBIrhL38726oIEAtDs=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "bc27f0fde01ce4e1bfec1ab122d72b7380278e68",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "locked": {
         "lastModified": 1733935885,
         "narHash": "sha256-xyiHLs6KJ1fxeGmcCxKjJE4yJknVJxbC8Y/ZRYyC8WE=",
         "owner": "NixOS",
@@ -105,8 +72,7 @@
     "root": {
       "inputs": {
         "devkitNix": "devkitNix",
-        "hax-nur": "hax-nur",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_2"
       }
     },
     "systems": {
