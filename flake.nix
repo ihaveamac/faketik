@@ -4,30 +4,21 @@
     devkitNix.url = "github:bandithedoge/devkitNix";
   };
 
-  outputs = { self, nixpkgs, devkitNix }: {
-    devShells.x86_64-linux.default = let
-      pkgs = import nixpkgs { system = "x86_64-linux"; overlays = [ devkitNix.overlays.default ]; };
-    in pkgs.mkShell {
-      packages = with pkgs; [
-        pkgs.devkitNix.devkitARM
-      ];
+  outputs = { self, nixpkgs, devkitNix }: let
+    pkgs = import nixpkgs { system = "x86_64-linux"; overlays = [ devkitNix.overlays.default ]; };
+  in {
+    devShells.x86_64-linux.default = pkgs.mkShell.overide { stdenv = pkgs.devkitNix.stdenvARM; } {};
 
-      inherit (pkgs.devkitNix.devkitARM) shellHook;
-    };
-
-    packages.x86_64-linux = let
-      pkgs = import nixpkgs { system = "x86_64-linux"; overlays = [ devkitNix.overlays.default ]; };
-    in rec {
-      faketik = pkgs.stdenvNoCC.mkDerivation rec {
+    packages.x86_64-linux = rec {
+      faketik = pkgs.devkitNix.stdenvARM.mkDerivation rec {
         pname = "faketik";
-        version = "0.3.0-unstable";
+        version = "1.1.2-unstable";
         src = builtins.path { path = ./.; name = pname; };
-
-        preBuild = pkgs.devkitNix.devkitARM.shellHook;
 
         makeFlags = [ "TARGET=${pname}" ];
 
         installPhase = ''
+          mkdir $out
           cp ${pname}.3dsx $out
         '';
       };
