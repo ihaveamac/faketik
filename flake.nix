@@ -7,7 +7,7 @@
   outputs = { self, nixpkgs, devkitNix }: let
     pkgs = import nixpkgs { system = "x86_64-linux"; overlays = [ devkitNix.overlays.default ]; };
   in {
-    devShells.x86_64-linux.default = pkgs.mkShell.overide { stdenv = pkgs.devkitNix.stdenvARM; } {};
+    devShells.x86_64-linux.default = pkgs.mkShell.override { stdenv = pkgs.devkitNix.stdenvARM; } {};
 
     packages.x86_64-linux = rec {
       faketik = pkgs.devkitNix.stdenvARM.mkDerivation rec {
